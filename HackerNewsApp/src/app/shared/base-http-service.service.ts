@@ -1,6 +1,6 @@
 import { environment } from "src/environments/environment";
 
-export abstract class BaseHttpServiceService {
+export abstract class BaseHttpService {
 
   constructor() { }
 

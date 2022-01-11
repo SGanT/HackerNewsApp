@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BaseHttpServiceService } from '../shared/base-http-service.service';
+import { BaseHttpService } from '../shared/base-http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/user.model';
 import { forkJoin, Observable, throwError } from 'rxjs';
@@ -9,7 +9,7 @@ import { catchError, delay, retryWhen, take, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseHttpServiceService {
+export class UserService extends BaseHttpService {
   protected cache = {};
 
   constructor(protected httpClient: HttpClient) {
