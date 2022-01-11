@@ -64,9 +64,7 @@ export class ItemService extends BaseHttpService {
         return this.getItem(randomId);
       }),
       filter(i => i.type == type && !i.deleted), 
-      tap(i => {
-        storyCount++;
-      })
+      tap(i => storyCount++)
     );
   }
 
