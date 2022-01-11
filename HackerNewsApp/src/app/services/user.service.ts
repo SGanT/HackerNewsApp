@@ -39,10 +39,10 @@ export class UserService extends BaseHttpService {
           retryWhen(errors => errors.pipe(delay(2000), take(10)))
         )
       );
-  }
+    }
 
     return forkJoin(requests) as Observable<User[]>;
-   }
+  }
 
   protected errorHandler(err) {
     console.warn('Error occured', err);
