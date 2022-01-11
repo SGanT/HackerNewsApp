@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class StoryListComponent implements OnInit {
   stories: Item[] = [];
+  storiesToLoad = 10;
   storyIds: number[] = [];
   users = {};
 
@@ -23,47 +24,37 @@ export class StoryListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadStoryIds();
-
+    this.loadItems();  
+     
     this.commonService.refreshStoryList.subscribe(() => {
       this.commonService.pageLoaderStateChanged.emit(true);
-      this.loadStoryIds();
-    });
-
-    this.storyIdsLoaded.subscribe(() => {
-      this.loadStories(this.storyIds);
+      this.stories = [];
+      this.loadItems();
     });
   }
 
-  public loadStories(ids: number[]) {
-    this.itemService.getItems(ids).subscribe((result) => {
-      let userNames = result.map(x => x.by);
-
-      this.stories = result.sort((a, b) => {
-        a.score === null ? a.score = 0 : false;
-        b.score === null ? b.score = 0 : false;
-        return a.score - b.score;
-      });
-
-      this.userService.getUsers(userNames).subscribe(result => {
-        result.forEach(user => {
-          this.users[user.id] = user;
+  public loadItems() {
+    this.itemService.getMaxItemId().subscribe(id => {
+      this.itemService.getRandomItems(this.storiesToLoad, 'story', id).subscribe(
+        result => this.stories.push(result),
+        err => console.warn(err),
+        () => {
+          this.stories = this.stories.sort( (a, b) => {
+            !a.score ? a.score = 0 : false;
+            !b.score ? b.score = 0 : false;
+            return a.score - b.score;
+          });
+          let userNames = this.stories.map(x => x.by);
+          console.log(this.stories);
+          this.userService.getUsers(userNames).subscribe(result => {
+            result.forEach(user => {
+              this.users[user.id] = user;
+            });
+            if (this.stories.length > this.storiesToLoad) this.stories = this.stories.slice(0, this.storiesToLoad);
+            this.commonService.pageLoaderStateChanged.emit(false);
+          });
         });
-        this.commonService.pageLoaderStateChanged.emit(false);
-      });
-    });
-  }
-
-  public loadStoryIds() {
-    this.itemService.getRandomTopStoriesIds(10).subscribe( 
-      (result) => {
-        this.storyIds = result;
-        this.storyIdsLoaded.emit();
-      },
-      (error) => {
-        console.warn('Error occured, see the details:\n', error);
-      }
-    );
+    }); 
   }
 
 }

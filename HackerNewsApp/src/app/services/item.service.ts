@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BaseHttpService } from '../shared/base-http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { Item } from '../shared/item.model';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, delay, map, retryWhen, take, tap } from 'rxjs/operators';
+import { forkJoin, interval, Observable, of, throwError } from 'rxjs';
+import { catchError, delay, filter, flatMap, retryWhen, take, takeWhile, tap } from 'rxjs/operators';
  
 
 @Injectable({
@@ -25,8 +25,15 @@ export class ItemService extends BaseHttpService {
       return 'item';
    }
 
-   public getItem(id: number){
-    return this.httpClient.get<Item>( this.endpoint(`${id}.json`) );
+   public getItem(id: number, useCache = true){
+    if (this.cache[id] && useCache) return of(this.cache[id]) as Observable<Item>;
+
+    return this.httpClient.get<Item>( this.endpoint(`${id}.json`) )
+      .pipe(
+        catchError(err => this.errorHandler(err)),
+        retryWhen(errors => errors.pipe(delay(2000), take(10))),
+        tap(item => this.cache[id] = item)
+      );
    }
 
    public getItems(ids: number[]) {
@@ -44,37 +51,30 @@ export class ItemService extends BaseHttpService {
     return forkJoin(requests) as Observable<Item[]>;
    }
 
-   public getTopStoriesIds(useCache = true) {
-     if (this.cache['topStories'] && useCache) return of(this.cache['topStories']);
-
-     return this.httpClient.get<number[]>( this.url('topstories.json') )
-      .pipe(
-        catchError(err => this.errorHandler(err)),
-        retryWhen(errors => errors.pipe(delay(2000), take(10))),
-        tap((result) => this.cache['topStories'] = result)
-      );
+   public getMaxItemId() {
+     return this.httpClient.get<number>(this.url('maxitem.json'));
    }
 
-   public getRandomTopStoriesIds(n: number): Observable<number[]> {
-     return this.getTopStoriesIds()
-      .pipe(
-        catchError(err => throwError(err)),
-        map(
-          (ids: number[]) => {
-            let result = [];
+  public getRandomItems(n: number, type = "story", maxId = 0) {
+    let storyCount = 0;
+    return interval(80).pipe(
+      takeWhile(i => storyCount < n),
+      flatMap(() => {
+        let randomId = this.randomNumber(maxId);
+        return this.getItem(randomId);
+      }),
+      filter(i => i.type == type && !i.deleted), 
+      tap(i => {
+        storyCount++;
+      })
+    );
+  }
 
-            for (let i = 0; i < n; i++) {
-              let randIndex = Math.floor( (Math.random()*ids.length) );
-              result.push(ids[randIndex]);
-              ids.splice(randIndex, 1);
-            }
-            return result;
-          }
-        )
-      );
-   }
+  public randomNumber(max: number) {
+    return Math.floor( (Math.random() * max) );
+  }
 
-   protected errorHandler(err) {
+  protected errorHandler(err) {
     console.warn('Error occured', err);
     return throwError(err);
    }
