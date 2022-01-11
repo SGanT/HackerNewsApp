@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseHttpService } from '../shared/base-http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/user.model';
-import { forkJoin, Observable, throwError } from 'rxjs';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, delay, retryWhen, take, tap } from 'rxjs/operators';
  
 
@@ -21,7 +21,7 @@ export class UserService extends BaseHttpService {
   }
 
   public getUser(id: string, useCache = true){
-    if (this.cache[id] && useCache) return this.cache[id];
+    if (this.cache[id] && useCache) return of(this.cache[id]);
 
     return this.httpClient.get<User>( this.endpoint(`${id}.json`) )
       .pipe(
