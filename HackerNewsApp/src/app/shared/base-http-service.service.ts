@@ -11,7 +11,7 @@ export abstract class BaseHttpServiceService {
   protected abstract get servicePathName(): string;
 
   /**
-   * Returns servive endpoint URL
+   * Returns service endpoint URL
    * 
    * @param action
    * @param servicePath The path to action
