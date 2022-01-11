@@ -1,0 +1,41 @@
+@import '../../shared/styles/variables';
+
+.footer-wrap {
+    width: 100%;
+    background: darken($light-red, 20%);
+}
+
+.footer {
+    padding: 25px $sm-padding;
+    color: $light;
+
+    a {
+        color: $light;
+
+    }
+}
+
+@media (min-width: $breakpoint-sm) {
+    .footer {
+        padding: 35px $md-padding;
+    }
+}
+
+@media (min-width: $breakpoint-md) {
+    .footer-wrap {
+        display: flex;
+        justify-content: center;
+    }
+
+    .footer {
+        width: $md-container-width;
+        padding: 30px $md-padding;
+    }
+}
+
+@media (min-width: $breakpoint-lg) {
+    .footer {
+        width: $lg-container-width;
+        padding: 30px $lg-padding;
+    }
+}

@@ -1,0 +1,42 @@
+@import '../../shared/styles/variables';
+
+.story-list {
+    padding: 0 $sm-padding;
+}
+
+@media (min-width: $breakpoint-sm) { 
+    .story-list {
+        padding: 0 $md-padding;
+    }
+}
+
+@media (min-width: $breakpoint-md) { 
+    .story-list-wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .story-list {
+        padding: 0 $md-padding;
+        width: $md-container-width;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        margin: 25px 0;
+    }
+
+    app-story-item {
+        margin: 10px;
+    }
+}
+
+@media (min-width: $breakpoint-lg) { 
+    .story-list {
+        padding: 0 $lg-padding;
+        width: $lg-container-width;
+        grid-template-columns: 33.3% 33.3% 33.3%;
+        margin: 25px 0;
+    }
+
+    app-story-item {
+        margin: 10px;
+    }
+}

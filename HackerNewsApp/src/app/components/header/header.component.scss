@@ -1,0 +1,72 @@
+@import '../../shared/styles/variables';
+
+.header-wrap {
+    width: 100%;
+    height: 60px;
+    background: $light-red;
+}
+
+.header {
+    padding: 10px $sm-padding;
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-title {
+    font-weight: bold;
+    font-size: 40px;
+    color: $light;
+    display: inline-block;
+}
+
+.refresh-btn {
+    background-color: transparent;
+    color: $light;
+    text-decoration: underline;
+    border: 0;
+    font-size: 15px;
+    outline: none;
+}
+
+@media (min-width: $breakpoint-sm) { 
+    .header-wrap {
+        height: auto;
+        align-items: center;
+    }
+
+    .header {
+        padding: 20px $md-padding;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: $breakpoint-md) { 
+    .header-wrap {
+        height: auto;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header {
+        padding: 20px $md-padding;
+        width: $md-container-width;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: $breakpoint-lg) { 
+
+    .header {
+        padding: 20px $lg-padding;
+        width: $lg-container-width;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .refresh-btn {
+        font-size: 18px;
+    }
+}

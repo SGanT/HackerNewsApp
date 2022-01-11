@@ -1,0 +1,49 @@
+@import '../../shared/styles/variables';
+
+.story-card {
+    background: $light;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 6px;
+    display: block;
+    color: $text-black;
+    text-decoration: none;
+    position: relative;
+}
+
+.card-title {
+    font-weight: bolder;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.card-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.card-link {
+    color: darken($red, 10%);
+    word-wrap: break-word;
+}
+
+.card-karma {
+    font-size: 10px;
+}
+
+.card-author {
+    word-wrap: break-word;
+}
+
+.card-img {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+@media (min-width: $breakpoint-md) {
+    .story-card {
+        margin: 0;
+    }
+}
