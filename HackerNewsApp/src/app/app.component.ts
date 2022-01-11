@@ -10,7 +10,6 @@ import { CommonService } from './services/common-service.service';
 export class AppComponent implements OnInit {
   title = 'HackerNewsApp';
   pageLoading = true;
-  displayError = false;
   
   constructor(
     protected itemService: ItemService,
