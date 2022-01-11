@@ -14,8 +14,6 @@ export class StoryListComponent implements OnInit {
   storiesToLoad = 10;
   storyIds: number[] = [];
   users = {};
-
-  storyIdsLoaded = new EventEmitter();
   
   constructor(
     protected itemService: ItemService,
