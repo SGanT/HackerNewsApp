@@ -19,13 +19,13 @@ export class ItemService extends BaseHttpService {
       protected userService: UserService
     ) {
     super();
-   }
+  }
 
-   protected get servicePathName(): string {
+  protected get servicePathName(): string {
       return 'item';
-   }
+  }
 
-   public getItem(id: number, useCache = true){
+  public getItem(id: number, useCache = true){
     if (this.cache[id] && useCache) return of(this.cache[id]) as Observable<Item>;
 
     return this.httpClient.get<Item>( this.endpoint(`${id}.json`) )
@@ -34,9 +34,9 @@ export class ItemService extends BaseHttpService {
         retryWhen(errors => errors.pipe(delay(2000), take(10))),
         tap(item => this.cache[id] = item)
       );
-   }
+  }
 
-   public getItems(ids: number[]) {
+  public getItems(ids: number[]) {
     let requests = [];
 
     for (let i of ids) {
@@ -49,11 +49,11 @@ export class ItemService extends BaseHttpService {
     }
 
     return forkJoin(requests) as Observable<Item[]>;
-   }
+  }
 
-   public getMaxItemId() {
-     return this.httpClient.get<number>(this.url('maxitem.json'));
-   }
+  public getMaxItemId() {
+    return this.httpClient.get<number>(this.url('maxitem.json'));
+  }
 
   public getRandomItems(n: number, type = "story", maxId = 0) {
     let storyCount = 0;
