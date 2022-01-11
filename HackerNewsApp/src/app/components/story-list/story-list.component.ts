@@ -43,6 +43,7 @@ export class StoryListComponent implements OnInit {
             return a.score - b.score;
           });
           this.loadUsers();
+          if (this.stories.length > this.storiesToLoad) this.stories = this.stories.slice(0, this.storiesToLoad);
           console.log(this.stories); 
         });
     }); 
@@ -54,7 +55,6 @@ export class StoryListComponent implements OnInit {
       result.forEach(user => {
         this.users[user.id] = user;
       });
-      if (this.stories.length > this.storiesToLoad) this.stories = this.stories.slice(0, this.storiesToLoad);
       this.commonService.pageLoaderStateChanged.emit(false);
     });
   }
