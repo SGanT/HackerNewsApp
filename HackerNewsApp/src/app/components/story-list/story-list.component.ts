@@ -44,17 +44,21 @@ export class StoryListComponent implements OnInit {
             !b.score ? b.score = 0 : false;
             return a.score - b.score;
           });
-          let userNames = this.stories.map(x => x.by);
-          console.log(this.stories);
-          this.userService.getUsers(userNames).subscribe(result => {
-            result.forEach(user => {
-              this.users[user.id] = user;
-            });
-            if (this.stories.length > this.storiesToLoad) this.stories = this.stories.slice(0, this.storiesToLoad);
-            this.commonService.pageLoaderStateChanged.emit(false);
-          });
+          this.loadUsers();
+          console.log(this.stories); 
         });
     }); 
+  }
+
+  public loadUsers() {
+    let userNames = this.stories.map(x => x.by);
+    this.userService.getUsers(userNames).subscribe(result => {
+      result.forEach(user => {
+        this.users[user.id] = user;
+      });
+      if (this.stories.length > this.storiesToLoad) this.stories = this.stories.slice(0, this.storiesToLoad);
+      this.commonService.pageLoaderStateChanged.emit(false);
+    });
   }
 
 }
