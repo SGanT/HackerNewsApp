@@ -4,9 +4,9 @@
     </div>
     <div class="card-info">
         <span class="card-date" *ngIf="story.time">{{ story.time*1000 | date : 'short'}}</span>
-        <span class="card-author" *ngIf="story.by">by <b>{{ story.by }}<span class="card-karma" *ngIf="users[story.by]">({{ users[story.by]?.karma }})</span></b></span>
         <span class="card-score" *ngIf="story.score">Score: <b>{{ story.score }}</b></span>
     </div>
+    <div class="card-author" *ngIf="story.by">by <b>{{ story.by }}<span class="card-karma" *ngIf="users[story.by]">({{ users[story.by]?.karma }})</span></b></div>
     <img class="card-img" src="/assets/img/dummy.jpg" alt="">
     <div class="card-link" *ngIf="story.url">{{ story.url }}</div>
 </a>

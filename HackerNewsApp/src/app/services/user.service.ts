@@ -25,6 +25,8 @@ export class UserService extends BaseHttpService {
 
     return this.httpClient.get<User>( this.endpoint(`${id}.json`) )
       .pipe(
+        catchError(err => this.errorHandler(err)),
+        retryWhen(errors => errors.pipe(delay(2000), take(10))),
         tap(result => this.cache[id] = result)
       );
   }
